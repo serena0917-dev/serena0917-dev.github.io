@@ -25,7 +25,7 @@ design, and an LLM-based SRE agent at ViewSonic.
 - **Migration scale** — GCP Org migration (Shared VPC, PSC, DMS) · GitHub org migration (69 repos)
 - **Security** — Drove breach response & full EKS rebuild · Secret Manager + ESO + key rotation · WAF / GuardDuty / SCC
 - **Cost** — AWS Savings Plans + RI (RDS / Redis / OpenSearch + Compute SP) · GCP CUD · 100% Spot GKE · KubeCost
-- **AI / automation** — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + auto-Jira pipeline adopted by infra team
+- **AI / automation** — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team
 
 ---
 
@@ -87,14 +87,15 @@ design, and an LLM-based SRE agent at ViewSonic.
 
 #### 🤖 Multi-Agent Automation Platform *(internal DevTool)*
 - Built Claude Code-based automation framework: **30+ custom skills**
-  covering AWS, Kubernetes, GitHub, Jira, and Confluence workflows; hook
-  system; 3 parallel execution modes (team-mode / parallel-research /
+  covering AWS infrastructure, Kubernetes, GitHub, CI/CD, and security
+  workflows; hook system for event-driven actions (pre-commit / post-edit
+  / on-PR); 3 parallel execution modes (team-mode / parallel-research /
   parallel-dev).
-- Designed **PR-open-gated auto-Jira pipeline** (3-path dispatch:
-  main-merge / branch-OPEN-PR / existing-key fallback) — every PR
-  auto-creates dual-board tickets (MVB Ops Kanban + VDS DevOps Scrum) with
-  linked Confluence spec pages. Eliminated manual ticket entry across the
-  infra team.
+- Packed internal AWS / Terraform / K8s reference docs into searchable XML
+  knowledge bases for LLM lookup during incident response and IaC review.
+- Hook-driven event automation: PR open / merge triggers, post-edit
+  linting, pre-commit validation pipelines — eliminated manual hand-offs
+  in daily ops.
 - Adopted by infra team as daily-driver tooling.
 
 #### 🌐 Cross-Account Networking & Alerting
@@ -106,6 +107,30 @@ design, and an LLM-based SRE agent at ViewSonic.
   alarms into one declarative source of truth.
 - Operate AWS Client VPN (dev / prd endpoints) with SNAT routing for
   engineer access to internal resources (EKS, RDS, ElastiCache).
+
+#### 💰 AWS Cost & IAM Identity Center Governance
+- Integrated AWS Cost Explorer at **Org payer level** (admin account,
+  us-east-1) for cross-account **NetAmortizedCost** reporting with RI /
+  Savings Plan amortization across 11 accounts; replaced per-account
+  UnblendedCost guesswork that understated true monthly cost by **20–35%**.
+- Centralized IAM Identity Center governance (us-east-1): standardized
+  shared permission sets (`vsx-fullstack-v1` / `vsx-ro-v1` /
+  `vsx-admin-v1` / `vsx-vendor-v1`) across all subaccount families
+  instead of per-app proliferation — prevents policy drift and simplifies
+  audit.
+- Automated user / group / permission-set provisioning via aws-cli +
+  Identity Store + SSO-Admin APIs (modular bash workflow).
+
+#### 🔒 Security Scan Automation *(SCA / SAST)*
+- Integrated central reusable GitHub Actions workflow
+  (`edu-security-lab-va`) with **DefectDojo + Dependency-Track** for SBOM
+  generation and vulnerability scanning across all migrated repos.
+- OIDC-based AWS role assumption (`DevSecOps-Github-OIDC-bot`) for secure
+  cross-account scan access; standardized `BU/product/repo-name` taxonomy
+  for portfolio classification.
+- Authored integration playbook covering common gotchas (workflow
+  permissions, OIDC token scope, DT project ACL setup) — reduced
+  first-time integration failures across BU teams.
 
 ---
 
@@ -239,5 +264,5 @@ firmware management products.
 | **Security & Compliance** | SOC 2 · ISO 27001 · WAF · GuardDuty · Security Hub · Cloud Armor · cert-manager · Network Policy · Chaos Monkey · DefectDojo + Dependency-Track |
 | **AI / DevTools** | LLM-based SRE automation (OpenClaw) · Claude Code multi-agent skill platform |
 | **Languages** | Python · TypeScript · Node.js · Bash · HCL · YAML |
-| **Other** | Atlassian (Jira REST v3, Confluence storage format) · Fortinet VPN · IoT (MQTT, GPIO, Raspberry Pi) · AWS Client VPN |
+| **Other** | Fortinet VPN · IoT (MQTT, GPIO, Raspberry Pi) · AWS Client VPN |
 

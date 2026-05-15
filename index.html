@@ -319,7 +319,7 @@ design, and an LLM-based SRE agent at ViewSonic.</p>
 <li><strong>Migration scale</strong> — GCP Org migration (Shared VPC, PSC, DMS) · GitHub org migration (69 repos)</li>
 <li><strong>Security</strong> — Drove breach response &amp; full EKS rebuild · Secret Manager + ESO + key rotation · WAF / GuardDuty / SCC</li>
 <li><strong>Cost</strong> — AWS Savings Plans + RI (RDS / Redis / OpenSearch + Compute SP) · GCP CUD · 100% Spot GKE · KubeCost</li>
-<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + auto-Jira pipeline adopted by infra team</li>
+<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team</li>
 </ul>
 <hr />
 <h2>Experience</h2>
@@ -383,14 +383,15 @@ design, and an LLM-based SRE agent at ViewSonic.</p>
 <h4>🤖 Multi-Agent Automation Platform <em>(internal DevTool)</em></h4>
 <ul>
 <li>Built Claude Code-based automation framework: <strong>30+ custom skills</strong><br />
-  covering AWS, Kubernetes, GitHub, Jira, and Confluence workflows; hook<br />
-  system; 3 parallel execution modes (team-mode / parallel-research /<br />
+  covering AWS infrastructure, Kubernetes, GitHub, CI/CD, and security<br />
+  workflows; hook system for event-driven actions (pre-commit / post-edit<br />
+  / on-PR); 3 parallel execution modes (team-mode / parallel-research /<br />
   parallel-dev).</li>
-<li>Designed <strong>PR-open-gated auto-Jira pipeline</strong> (3-path dispatch:<br />
-  main-merge / branch-OPEN-PR / existing-key fallback) — every PR<br />
-  auto-creates dual-board tickets (MVB Ops Kanban + VDS DevOps Scrum) with<br />
-  linked Confluence spec pages. Eliminated manual ticket entry across the<br />
-  infra team.</li>
+<li>Packed internal AWS / Terraform / K8s reference docs into searchable XML<br />
+  knowledge bases for LLM lookup during incident response and IaC review.</li>
+<li>Hook-driven event automation: PR open / merge triggers, post-edit<br />
+  linting, pre-commit validation pipelines — eliminated manual hand-offs<br />
+  in daily ops.</li>
 <li>Adopted by infra team as daily-driver tooling.</li>
 </ul>
 <h4>🌐 Cross-Account Networking &amp; Alerting</h4>
@@ -403,6 +404,32 @@ design, and an LLM-based SRE agent at ViewSonic.</p>
   alarms into one declarative source of truth.</li>
 <li>Operate AWS Client VPN (dev / prd endpoints) with SNAT routing for<br />
   engineer access to internal resources (EKS, RDS, ElastiCache).</li>
+</ul>
+<h4>💰 AWS Cost &amp; IAM Identity Center Governance</h4>
+<ul>
+<li>Integrated AWS Cost Explorer at <strong>Org payer level</strong> (admin account,<br />
+  us-east-1) for cross-account <strong>NetAmortizedCost</strong> reporting with RI /<br />
+  Savings Plan amortization across 11 accounts; replaced per-account<br />
+  UnblendedCost guesswork that understated true monthly cost by <strong>20–35%</strong>.</li>
+<li>Centralized IAM Identity Center governance (us-east-1): standardized<br />
+  shared permission sets (<code>vsx-fullstack-v1</code> / <code>vsx-ro-v1</code> /<br />
+<code>vsx-admin-v1</code> / <code>vsx-vendor-v1</code>) across all subaccount families<br />
+  instead of per-app proliferation — prevents policy drift and simplifies<br />
+  audit.</li>
+<li>Automated user / group / permission-set provisioning via aws-cli +<br />
+  Identity Store + SSO-Admin APIs (modular bash workflow).</li>
+</ul>
+<h4>🔒 Security Scan Automation <em>(SCA / SAST)</em></h4>
+<ul>
+<li>Integrated central reusable GitHub Actions workflow<br />
+  (<code>edu-security-lab-va</code>) with <strong>DefectDojo + Dependency-Track</strong> for SBOM<br />
+  generation and vulnerability scanning across all migrated repos.</li>
+<li>OIDC-based AWS role assumption (<code>DevSecOps-Github-OIDC-bot</code>) for secure<br />
+  cross-account scan access; standardized <code>BU/product/repo-name</code> taxonomy<br />
+  for portfolio classification.</li>
+<li>Authored integration playbook covering common gotchas (workflow<br />
+  permissions, OIDC token scope, DT project ACL setup) — reduced<br />
+  first-time integration failures across BU teams.</li>
 </ul>
 <hr />
 <h3>SRE · BitoPro Technology</h3>
@@ -578,7 +605,7 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>Other</strong></td>
-<td>Atlassian (Jira REST v3, Confluence storage format) · Fortinet VPN · IoT (MQTT, GPIO, Raspberry Pi) · AWS Client VPN</td>
+<td>Fortinet VPN · IoT (MQTT, GPIO, Raspberry Pi) · AWS Client VPN</td>
 </tr>
 </tbody>
 </table>
