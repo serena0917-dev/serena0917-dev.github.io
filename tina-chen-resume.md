@@ -135,7 +135,7 @@ design, and an LLM-based SRE agent at ViewSonic.
 ---
 
 ### SRE · BitoPro Technology
-*Taipei · 2024 – 2025 · O&M Department · (Taiwan's largest crypto exchange)*
+*Taipei · 2023 – 2025 · O&M Department · (Taiwan's largest crypto exchange)*
 
 #### 🔥 Security Breach Response
 - Rebuilt EKS cluster from scratch and migrated all applications post-incident.
@@ -184,7 +184,7 @@ design, and an LLM-based SRE agent at ViewSonic.
 ---
 
 ### SRE · awoo Intelligence
-*Taipei · 2022 – 2024 · Cloud Infra Department*
+*Taipei · 2021 – 2023 · Cloud Infra Department*
 
 #### 🌏 GCP Organization Migration
 - Designed and executed GCP organization migration end-to-end: Shared VPC,
@@ -227,7 +227,7 @@ design, and an LLM-based SRE agent at ViewSonic.
 ---
 
 ### Cloud Engineer · Askey Computer Corp
-*New Taipei · 2019 – 2022 · Cloud Dev Department · (ASUS subsidiary, hardware / IoT)*
+*New Taipei · 2019 – 2021 · Cloud Dev Department · (ASUS subsidiary, hardware / IoT)*
 
 Built cloud APIs and IoT services for smart home, smart bus, FOTA, and
 firmware management products.
