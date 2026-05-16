@@ -4,7 +4,7 @@
 **Solution Architect / SRE / DevOps**
 
 📧 tinachen1996121@gmail.com · 📱 0917-577-377 · 📍 New Taipei City, Taiwan
-🔗 cake.me/tinachen1996121
+🔗 [cake.me/tinachen1996121](https://www.cake.me/resumes/tinachen1996121) · 💼 [LinkedIn](https://www.linkedin.com/in/yu-hsuan-chen-1a08b1203/)
 
 ---
 
