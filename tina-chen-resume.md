@@ -31,6 +31,19 @@ design, and an LLM-based SRE agent at ViewSonic.
 
 ---
 
+## AI Workflow & Tooling
+
+Daily-driver LLM integration into DevOps work — built around custom skills, hooks, and reusable knowledge:
+
+- **Stack** — Claude Code (Opus 4.7, 1M context) as primary terminal-native AI for ops, IaC review, and incident triage; Cursor / GitHub Copilot for IDE pair-programming.
+- **Skill design** — Author reusable skills following **progressive disclosure** (metadata → SKILL.md → references) so deep procedural knowledge loads on-demand without eating context budget; trigger keywords tuned for high recall, low false-positive.
+- **Hook-driven automation** — Built event hooks (`SessionStart` / `PostToolUse` / `Stop`) for dirty-repo warnings, auto-commit + auto-PR with merge gating, and auto-Jira-ticket on PR open — removed manual hand-offs from daily ops.
+- **Multi-agent orchestration** — Use team-mode (multi-role review), parallel-research (multi-angle investigation), and parallel-dev (git-worktree isolated feature work) to scale beyond single-agent context limits.
+- **Prompt engineering for ops** — System prompts encode incident triage SOPs + action-oriented guardrails (no destructive ops without explicit consent); knowledge persistence routed by **7-criteria decision tree** (memory vs CLAUDE.md rule vs skill file vs project doc).
+- **Knowledge as code** — Pack internal repos + AWS / Terraform / K8s reference docs into searchable XML knowledge bases; LLM looks them up during incident response and IaC review.
+
+---
+
 ## Experience
 
 ### DevOps Engineer · ViewSonic Corporation
@@ -264,7 +277,7 @@ firmware management products.
 | **CI/CD** | GitLab + GitLab Runner · Jenkins (JNLP + Kaniko + S3 / EFS cache) · GitHub Actions (reusable workflows, OIDC) |
 | **Observability** | Grafana · OpenTelemetry · Thanos · ELK / OpenSearch · PMM · CloudWatch · Cloud Monitoring · Sentry |
 | **Security & Compliance** | SOC 2 · ISO 27001 · WAF · GuardDuty · Security Hub · Cloud Armor · cert-manager · Network Policy · Chaos Monkey · DefectDojo + Dependency-Track |
-| **AI / DevTools** | LLM-based SRE automation (OpenClaw) · Claude Code multi-agent skill platform |
+| **AI / DevTools** | Claude Code (Opus, 1M ctx) · Custom skill development (progressive disclosure, trigger design) · Hook-driven automation (SessionStart / PostToolUse / Stop) · Multi-agent orchestration (team-mode / parallel-research / parallel-dev) · Prompt engineering for ops · LLM-based incident response (OpenClaw) · Cursor · GitHub Copilot |
 | **Languages** | Python · TypeScript · Node.js · Bash · HCL · YAML |
 | **Other** | Fortinet VPN · IoT (MQTT, GPIO, Raspberry Pi) · AWS Client VPN |
 

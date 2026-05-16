@@ -341,6 +341,17 @@ design, and an LLM-based SRE agent at ViewSonic.</p>
 <li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team</li>
 </ul>
 <hr />
+<h2>AI Workflow &amp; Tooling</h2>
+<p>Daily-driver LLM integration into DevOps work — built around custom skills, hooks, and reusable knowledge:</p>
+<ul>
+<li><strong>Stack</strong> — Claude Code (Opus 4.7, 1M context) as primary terminal-native AI for ops, IaC review, and incident triage; Cursor / GitHub Copilot for IDE pair-programming.</li>
+<li><strong>Skill design</strong> — Author reusable skills following <strong>progressive disclosure</strong> (metadata → SKILL.md → references) so deep procedural knowledge loads on-demand without eating context budget; trigger keywords tuned for high recall, low false-positive.</li>
+<li><strong>Hook-driven automation</strong> — Built event hooks (<code>SessionStart</code> / <code>PostToolUse</code> / <code>Stop</code>) for dirty-repo warnings, auto-commit + auto-PR with merge gating, and auto-Jira-ticket on PR open — removed manual hand-offs from daily ops.</li>
+<li><strong>Multi-agent orchestration</strong> — Use team-mode (multi-role review), parallel-research (multi-angle investigation), and parallel-dev (git-worktree isolated feature work) to scale beyond single-agent context limits.</li>
+<li><strong>Prompt engineering for ops</strong> — System prompts encode incident triage SOPs + action-oriented guardrails (no destructive ops without explicit consent); knowledge persistence routed by <strong>7-criteria decision tree</strong> (memory vs CLAUDE.md rule vs skill file vs project doc).</li>
+<li><strong>Knowledge as code</strong> — Pack internal repos + AWS / Terraform / K8s reference docs into searchable XML knowledge bases; LLM looks them up during incident response and IaC review.</li>
+</ul>
+<hr />
 <h2>Experience</h2>
 <h3>DevOps Engineer · ViewSonic Corporation</h3>
 <p><em>New Taipei · 2025 – Present · DEV Department</em></p>
@@ -616,7 +627,7 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>AI / DevTools</strong></td>
-<td>LLM-based SRE automation (OpenClaw) · Claude Code multi-agent skill platform</td>
+<td>Claude Code (Opus, 1M ctx) · Custom skill development (progressive disclosure, trigger design) · Hook-driven automation (SessionStart / PostToolUse / Stop) · Multi-agent orchestration (team-mode / parallel-research / parallel-dev) · Prompt engineering for ops · LLM-based incident response (OpenClaw) · Cursor · GitHub Copilot</td>
 </tr>
 <tr>
 <td><strong>Languages</strong></td>
