@@ -98,6 +98,18 @@ main {
     border-color: var(--blue-900);
 }
 
+/* === Profile photo === */
+.profile-photo {
+    float: right;
+    width: 130px;
+    height: auto;
+    border-radius: 8px;
+    margin: 4px 0 16px 28px;
+    box-shadow: 0 1px 3px rgba(15, 23, 42, 0.10),
+                0 4px 12px rgba(15, 23, 42, 0.08);
+    object-fit: cover;
+}
+
 /* === H1 / Name === */
 h1 {
     font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue',
@@ -278,6 +290,12 @@ footer {
     h1 { font-size: 30px; }
     h1 + p { font-size: 15px; }
     h2 { font-size: 14px; }
+    .profile-photo {
+        float: none;
+        display: block;
+        width: 110px;
+        margin: 0 auto 16px;
+    }
     table, thead, tbody, tr, th, td { display: block; }
     th { display: none; }
     td:first-child {

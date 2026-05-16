@@ -34,6 +34,16 @@ body {
     margin: 0;
 }
 
+/* === Profile photo === */
+.profile-photo {
+    float: right;
+    width: 100pt;
+    height: auto;
+    margin: 0 0 8pt 14pt;
+    border-radius: 4pt;
+    object-fit: cover;
+}
+
 /* === Name (H1) === */
 h1 {
     font-family: -apple-system, 'SF Pro Display', 'Helvetica Neue',

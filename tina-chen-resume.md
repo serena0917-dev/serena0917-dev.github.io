@@ -1,3 +1,5 @@
+<img src="profile.jpg" class="profile-photo" alt="Yu Hsuan Chen (Tina)" />
+
 # Yu Hsuan Chen (Tina)
 **Solution Architect / SRE / DevOps**
 
