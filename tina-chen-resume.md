@@ -1,6 +1,6 @@
-<img src="profile.jpg" class="profile-photo" alt="Yu Hsuan Chen (Tina)" />
+<img src="profile.jpg" class="profile-photo" alt="yh chen" />
 
-# Yu Hsuan Chen (Tina)
+# yh chen
 **Solution Architect / SRE / DevOps**
 
 📧 tinachen1996121@gmail.com · 📱 0917-577-377 · 📍 New Taipei City, Taiwan
