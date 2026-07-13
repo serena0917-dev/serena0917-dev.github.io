@@ -1,6 +1,6 @@
-# Tina Chen — Resume
+# yh chen — Resume
 
-Source of truth for my resume, deployed at **https://tinachen1996121-dev.github.io/**.
+Source of truth for my resume, deployed at **https://serena0917-dev.github.io/**.
 
 ## Files
 
