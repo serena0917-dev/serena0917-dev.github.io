@@ -418,14 +418,28 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 </ul>
 <h4>🔎 Agent Data Sources <em>(Gemini Enterprise)</em></h4>
 <ul>
-<li>Connected BigQuery tables to Gemini Enterprise agents as data stores,<br />
-  with daily re-sync and no extra IAM for requesters.</li>
-<li><strong>Cost-aware design</strong> — measured index cost from our own billing and<br />
-  index-to-source ratios; steered a 517M-row raw event table to a<br />
-  pre-aggregated summary table instead, avoiding an estimated<br />
-  <strong>$600–1,100 / month</strong> recurring index bill.</li>
-<li>Diagnosed BigQuery syncs silently dropping rows at the 10M document quota;<br />
-  raised it to 20M and moved large tables to rolling 30-day copies.</li>
+<li><strong>The ask</strong> — teams filed "connect BigQuery to my agent" as permission<br />
+  requests, but nothing was missing in IAM: the table simply had no data<br />
+  store. Turned it into a repeatable path — a BigQuery connector with daily<br />
+  re-sync, attached to the Gemini Enterprise app — with no extra roles for<br />
+  requesters.</li>
+<li><strong>Key insight</strong> — a data store is a retrieval index, not an analytics engine:<br />
+  every row becomes a document with its own embedding, and the agent gets<br />
+  back matching rows. It cannot <code>GROUP BY</code>, so indexing a raw event log does<br />
+  not answer "how did viewing time trend by region".</li>
+<li><strong>Cost model</strong> — derived index price from our own billing export and<br />
+  measured index-to-source ratios (0.8–2.1×) on existing stores. Cost tracks<br />
+  row count, not columns: a 517M-row event table would have cost an<br />
+  estimated <strong>$600–1,100 / month</strong> and grown the project's index 5–9×.</li>
+<li><strong>Better architecture</strong> — the data owner builds a small summary or<br />
+  time-bounded table with a BigQuery scheduled query (one partition per day on<br />
+  reserved slots, effectively free); SRE connects that table instead. Ad-hoc<br />
+  analytics belongs to an agent that runs SQL, not a retrieval index.</li>
+<li><strong>Problem in production</strong> — syncs silently dropped rows once the project<br />
+  hit its 10M-document quota, because every connector rewrites its whole<br />
+  table daily. Traced usage per table, raised the quota to 20M via change<br />
+  ticket, and moved large tables to rolling 30-day copies (5.26M → ~1.45M<br />
+  rows) so growth stays bounded.</li>
 </ul>
 <h4>🔥 Incident Root Cause &amp; SOP</h4>
 <ul>
