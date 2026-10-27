@@ -521,11 +521,33 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 </ul>
 <h4>🌐 CDN &amp; Edge <em>(Akamai)</em></h4>
 <ul>
-<li>Added CDN caching for the SEO metadata API, including a locale-aware<br />
-  cache key.</li>
-<li>Moved a maintenance-status API to a CDN-direct Cloud Function, removing<br />
-  the GKE ingress hop.</li>
-<li>Bot protection for a scraped public API (in progress).</li>
+<li><strong>SEO metadata API caching</strong> — every request was hitting the Node.js<br />
+  origin. Added an Akamai cache rule with the web team (agreed a 1-day TTL<br />
+  instead of 7) plus a Fast Purge API client so they can invalidate on<br />
+  release; shipped to staging, verified caching and purge, then production.<br />
+  Kept 404s at Akamai's 10-second default, because the setting that extends<br />
+  it would also cache 5xx errors.</li>
+<li><strong>Locale-aware cache key</strong> — without <code>locale</code> in the key, every language<br />
+  got whichever response was cached first, for up to a day. Added it to the<br />
+  cache key on staging, verified per-locale entries, then production under a<br />
+  change ticket.</li>
+<li><strong>Maintenance-status API, 6 hops → 2</strong> — the shop waits on this API before<br />
+  first paint, and the old path ran through GKE ingress to an nginx pod that<br />
+  also owned the CORS headers. Moved CORS and <code>Cache-Control</code> into the Cloud<br />
+  Function itself, cut over dev through a Cloudflare Worker, then pointed<br />
+  the Akamai origin straight at the function — client → Akamai → function,<br />
+  with GKE out of the path.</li>
+<li><strong>Silent failure found during the move</strong> — another team's cleanup removed<br />
+  the old ingress route before the CDN cutover, so the endpoint returned 404<br />
+  for a day. The frontend fails open, so nothing broke visibly, but<br />
+  maintenance mode was inert; the cutover itself restored it. Lesson<br />
+  recorded: cleanup only after the cutover is verified.</li>
+<li><strong>Bot protection for a scraped API</strong> — an anonymous endpoint returning the full<br />
+  live-stream list was being scraped. Turned on Akamai bot detection in<br />
+  monitor mode, agreed the design with Akamai (allowlist our app, frontend<br />
+  and crawlers as custom bots; deny the rest on that path), blocked the<br />
+  worst scraper IPs, and ran a dry run on staging and production with<br />
+  nothing of ours blocked before enforcing.</li>
 </ul>
 <h4>🔐 IAM &amp; Provisioning as Code</h4>
 <ul>
