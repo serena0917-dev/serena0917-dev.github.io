@@ -421,7 +421,24 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   VPC egress to MongoDB Atlas · Datadog Agent on a new prod project ·<br />
   Secret Manager credentials · HPA tuning.</li>
 </ul>
-<h4>🤖 AI for SRE</h4>
+<h4>💬 BOBO — SRE Slack AI Agent</h4>
+<ul>
+<li>Contributed much of the SRE domain knowledge behind <strong>BOBO</strong>, the team's<br />
+  Slack agent (Hermes Agent, Gemini via the LiteLLM gateway).</li>
+<li><strong>How it is taught</strong> — no fine-tuning: a persona and operating rules file with a<br />
+  skill routing table, plus <strong>20+ runbook skills</strong> (access requests, GCP IAM<br />
+  ticket pipeline, Terraform PRs, GKE / Cloud SQL creation, Helm deploys,<br />
+  alert triage, observability map, LiteLLM ops, architecture). Every change<br />
+  goes through PR + CI, with a promptfoo benchmark scoring answers.</li>
+<li><strong>What it does</strong> — answers architecture / config / permission questions;<br />
+  reads GitHub, Jira, Confluence, Datadog, Slack and GCP IAM; opens issues<br />
+  and IaC PRs and runs <code>terraform plan</code>; GCP IAM tickets are dispatched to it<br />
+  automatically.</li>
+<li><strong>Guardrails</strong> — read-only GCP, per-session Docker sandbox with 1-hour<br />
+  tokens, hard blocklist for destructive commands, manual approval with<br />
+  timeout, user / channel allowlists; merge and apply stay with humans.</li>
+</ul>
+<h4>🛠️ AI for SRE</h4>
 <ul>
 <li>Built Claude Code skills for IAM ticket intake, PR review against live<br />
   GCP state, and Datadog queries.</li>
