@@ -466,12 +466,30 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 </ul>
 <h4>🔥 Incident Root Cause &amp; SOP</h4>
 <ul>
-<li>Traced a <strong>5.8h Kafka consumer lag</strong> on the analytics pipeline to a single<br />
-  web client flooding pageviews; drove the frontend fix and verified the<br />
-  lag recovered.</li>
-<li>Wrote the reusable SOP for tracing consumer lag back to one device.</li>
-<li>Replaced an expired origin certificate with <strong>Google-managed certificates</strong><br />
-  for production and staging domains.</li>
+<li><strong>Analytics pipeline lag</strong> — one Kafka partition of the web-analytics<br />
+  pipeline backed up to ~900K messages (<strong>5.8h</strong> behind) while the other 35<br />
+  stayed at seconds, and no alert fired.</li>
+<li><strong>Finding the source</strong> — sampled 3,000 messages at the consumer offset:<br />
+  82% came from one device, with identical IP, cookie, URL and page-load<br />
+  timestamp — the same page calling trackPageView ~36×/s, not reloads or a<br />
+  DDoS. Matched it in BigQuery by hashing the user id (1.48M events, 9× the<br />
+  next device). Per-device sequential consumption (~25/s) explained why only<br />
+  that partition lagged.</li>
+<li><strong>Root cause</strong> — not one user but a frontend loop: the live room page spun<br />
+  when a blocked viewer's streamer ended the stream; 24 devices accounted<br />
+  for 97.5% of that event. Handed the reproduction to the web team; after<br />
+  the fix, daily volume dropped from 1.83M to 2.6K and lag returned to ~25.</li>
+<li><strong>SOP</strong> — wrote the runbook for tracing consumer lag back to one device,<br />
+  including two lookup traps that had cost time (which id field and which<br />
+  event-name field are populated for web traffic); follow-ups opened for<br />
+  per-device rate limiting and a lag alert that actually fires.</li>
+<li><strong>Expired origin certificate</strong> — the <code>*.17.live</code> origin cert expired and<br />
+  Akamai's strict origin check started returning 503. Replaced it with<br />
+  self-renewing <strong>Google-managed wildcard certificates</strong> (Certificate Manager,<br />
+  DNS authorization) across production, staging and a partner property.</li>
+<li><strong>Drift lesson</strong> — an old Terraform import of the load-balancer proxy reverted<br />
+  the hand-attached cert map on an unrelated apply (75 min of 503); moved<br />
+  the cert map into Terraform so the fix cannot be undone again.</li>
 </ul>
 <h4>🌐 CDN &amp; Edge <em>(Akamai)</em></h4>
 <ul>
