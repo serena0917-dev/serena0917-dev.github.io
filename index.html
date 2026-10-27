@@ -483,13 +483,31 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   including two lookup traps that had cost time (which id field and which<br />
   event-name field are populated for web traffic); follow-ups opened for<br />
   per-device rate limiting and a lag alert that actually fires.</li>
-<li><strong>Expired origin certificate</strong> — the <code>*.17.live</code> origin cert expired and<br />
-  Akamai's strict origin check started returning 503. Replaced it with<br />
-  self-renewing <strong>Google-managed wildcard certificates</strong> (Certificate Manager,<br />
-  DNS authorization) across production, staging and a partner property.</li>
-<li><strong>Drift lesson</strong> — an old Terraform import of the load-balancer proxy reverted<br />
-  the hand-attached cert map on an unrelated apply (75 min of 503); moved<br />
-  the cert map into Terraform so the fix cannot be undone again.</li>
+</ul>
+<h4>🔒 Expired Origin Certificate <em>(Akamai 503)</em></h4>
+<ul>
+<li><strong>How it surfaced</strong> — the staging site started returning 503 while production<br />
+  still looked healthy. Akamai checks origin certificates strictly, and the<br />
+  <code>*.17.live</code> origin cert had expired two days earlier; production only<br />
+  survived on already-open connections.</li>
+<li><strong>Troubleshooting</strong> — went straight to the load-balancer IPs with<br />
+  <code>openssl s_client</code> and <code>curl --resolve</code> to see the cert each origin actually<br />
+  served, then reproduced the failure for production on Akamai's staging<br />
+  network (new connections: <code>503 err_conn_strict_cert</code>) before real users hit<br />
+  it.</li>
+<li><strong>Problems along the way</strong> — attaching a certificate map makes the proxy<br />
+  ignore its existing certificates, so a map covering only one host left<br />
+  sibling hostnames with no certificate. And the per-host Google-managed<br />
+  cert one site used could only renew while DNS pointed straight at the<br />
+  load balancer — it had been taken off Akamai to keep it renewing.</li>
+<li><strong>Fix</strong> — one Google-managed <strong>wildcard</strong> certificate per project (Certificate<br />
+  Manager, <strong>DNS authorization</strong>) with map entries for every host; it renews no<br />
+  matter where DNS points, so that site went back behind the Akamai CDN.<br />
+  Certificates, DNS authorizations and maps live in Terraform.</li>
+<li><strong>Rollout</strong> — staging first and verified, then production under an approved<br />
+  change ticket with a written rollback; each host checked for issuer, SAN,<br />
+  expiry and strict-TLS curl, plus Akamai staging 503 → 200. No more manual<br />
+  certificate renewals.</li>
 </ul>
 <h4>🌐 CDN &amp; Edge <em>(Akamai)</em></h4>
 <ul>
