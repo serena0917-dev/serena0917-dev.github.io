@@ -400,10 +400,32 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   tokens, hard blocklist for destructive commands, manual approval with<br />
   timeout, user / channel allowlists; merge and apply stay with humans.</li>
 </ul>
-<h4>📏 Model Evaluation</h4>
+<h4>📏 Model Evaluation <em>(Opus vs Gemini for SRE work)</em></h4>
 <ul>
-<li>Ran a read-only benchmark of Opus vs Gemini on <strong>25 real SRE tasks</strong>.</li>
-<li>Set up Gemini Enterprise data stores on BigQuery for internal agents.</li>
+<li>Designed a repeatable benchmark of <strong>25 real SRE tasks</strong> across 6 categories<br />
+  (BigQuery SQL, GKE, GCP IAM, Terraform, hand-over commands, concepts),<br />
+  with answer keys taken from live read-only queries and a pinned Terraform<br />
+  commit.</li>
+<li><strong>Fair by construction</strong> — a fresh session per task and model with the same<br />
+  tools and effort; auto-compacted runs marked invalid; blind A/B judging in<br />
+  both orders, counting a win only when both orders agree (MT-Bench /<br />
+  LMArena style).</li>
+<li><strong>Graded by execution</strong> — 20 of 25 tasks scored by running the answer<br />
+  (Spider / BIRD, SWE-bench style); a human judge for the open-ended rest.</li>
+<li><strong>Safe to run against production</strong> — a default-deny read-only guard blocks<br />
+  file and git writes, prod kube contexts, secrets and gcloud / bq mutations,<br />
+  and caps every BigQuery scan; 81 allow / deny test cases pass.</li>
+</ul>
+<h4>🔎 Agent Data Sources <em>(Gemini Enterprise)</em></h4>
+<ul>
+<li>Connected BigQuery tables to Gemini Enterprise agents as data stores,<br />
+  with daily re-sync and no extra IAM for requesters.</li>
+<li><strong>Cost-aware design</strong> — measured index cost from our own billing and<br />
+  index-to-source ratios; steered a 517M-row raw event table to a<br />
+  pre-aggregated summary table instead, avoiding an estimated<br />
+  <strong>$600–1,100 / month</strong> recurring index bill.</li>
+<li>Diagnosed BigQuery syncs silently dropping rows at the 10M document quota;<br />
+  raised it to 20M and moved large tables to rolling 30-day copies.</li>
 </ul>
 <h4>☸️ GKE Operations</h4>
 <ul>
