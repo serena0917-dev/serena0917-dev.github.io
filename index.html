@@ -324,17 +324,17 @@ across <strong>AWS, GCP, and on-premise</strong> environments. Background spans 
 exchange (high regulatory bar), live streaming, martech SaaS, hardware / IoT,<br />
 and education tech — covering <strong>SOC 2 / ISO 27001 compliance</strong>, <strong>org-scale cloud migration</strong>,<br />
 <strong>security incident response</strong>, <strong>cost optimization</strong>, and <strong>AI-powered SRE<br />
-tooling</strong>. Currently Senior SRE at 17LIVE, running a 100+ cluster GKE estate,<br />
-Akamai CDN, and self-hosted LLM observability for the AI-agent platform.</p>
+tooling</strong>. Currently Senior SRE at 17LIVE, running the LLM platform for AI<br />
+agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <hr />
 <h2>Highlights</h2>
 <ul>
-<li><strong>Multi-cloud</strong> — AWS (~5 yrs) + GCP (2.5 yrs); 11+ AWS accounts, 100+ GKE clusters, multi-region production</li>
+<li><strong>Multi-cloud</strong> — AWS (~5 yrs) + GCP (2.5 yrs); 11+ AWS accounts, multi-region production</li>
 <li><strong>Compliance</strong> — SOC 2 audit readiness · ISO 27001 monitoring</li>
 <li><strong>Migration scale</strong> — GCP Org migration (Shared VPC, PSC, DMS) · GitHub org migration (69 repos)</li>
 <li><strong>Security</strong> — Drove breach response &amp; full EKS rebuild · Secret Manager + ESO + key rotation · WAF / GuardDuty / SCC</li>
 <li><strong>Cost</strong> — AWS Savings Plans + RI (RDS / Redis / OpenSearch + Compute SP) · GCP CUD · 100% Spot GKE · KubeCost</li>
-<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team · Self-hosted Langfuse (UAT → PROD) for LLM observability</li>
+<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team · LLM platform: Langfuse prompt management + LiteLLM gateway (auth, budget, usage) for AI agents</li>
 </ul>
 <hr />
 <h2>AI Workflow &amp; Tooling</h2>
@@ -351,21 +351,40 @@ Akamai CDN, and self-hosted LLM observability for the AI-agent platform.</p>
 <h2>Experience</h2>
 <h3>Senior SRE · 17LIVE Inc.</h3>
 <p><em>Taipei · Jul 2026 – Present · SRE Team · (live-streaming platform)</em></p>
-<h4>🔭 Self-hosted LLM Observability (Langfuse)</h4>
+<h4>🧠 LLM Platform — Prompt Management with Langfuse</h4>
 <ul>
-<li>Deployed self-hosted <strong>Langfuse v4</strong> across UAT → STAG → PROD on the AI-agent<br />
-  GKE clusters via ArgoCD + Helm, each environment shipped and verified<br />
-  before the next.</li>
-<li>Redis Cloud backend, Google SSO, and batch export of traces to GCS;<br />
-  wired Langfuse + LiteLLM into agent services so PM / RD can manage<br />
-  prompt versions and datasets.</li>
+<li>Self-hosted <strong>Langfuse v4</strong> as the prompt registry for agent services: PMs<br />
+  publish a new prompt version in the UI and the service fetches the<br />
+  labelled version at runtime — prompt wording changes no longer need a<br />
+  code change and deploy.</li>
+<li><strong>Datasets</strong> let a prompt change be checked before it reaches staging;<br />
+  enabled <strong>batch export to GCS</strong> so datasets and evaluation results feed<br />
+  content-evaluation automation (30-day retention).</li>
+<li>Rolled out UAT → STAG → PROD via ArgoCD + Helm, each verified before the<br />
+  next. PROD runs HA: multi-zone web / worker replicas with PDB, Cloud SQL<br />
+  regional HA + PITR, replicated Redis Cloud, Google SSO.</li>
 </ul>
-<h4>☸️ GKE Fleet Operations <em>(100+ clusters)</em></h4>
+<h4>🚦 LLM Gateway — Access &amp; Cost Control with LiteLLM</h4>
+<ul>
+<li>Moved agent-service Gemini traffic behind the <strong>LiteLLM gateway</strong> for<br />
+  per-key auth, budget control and usage logging; delivered gateway keys<br />
+  to UAT / STAG / PROD as KMS-encrypted flags and verified every rollout.</li>
+<li>Mapped the gateway model end to end: per-engineer virtual keys (vendor<br />
+  credentials live only on the proxy), model routing, per-key spend<br />
+  budgets, and why a key can or cannot see a model.</li>
+<li>Validated Claude Code running through the gateway with one unchanged<br />
+  config, switching backend by environment variables only.</li>
+</ul>
+<h4>📏 Model Evaluation</h4>
+<ul>
+<li>Ran a read-only benchmark of Opus vs Gemini on <strong>25 real SRE tasks</strong>.</li>
+<li>Set up Gemini Enterprise data stores on BigQuery for internal agents.</li>
+</ul>
+<h4>☸️ GKE Operations</h4>
 <ul>
 <li>Decommissioned a legacy data GKE cluster: wrote the rollback plan first,<br />
   scaled down and soaked for <strong>13 days</strong>, then deleted the cluster.</li>
-<li>Evaluated GKE fleet management for the multi-cluster estate; built a<br />
-  read-only fleet sweep for crashlooping / OOMKilled / pending workloads.</li>
+<li>Staged new service rollouts and HPA tuning on shared GKE clusters.</li>
 </ul>
 <h4>🔥 Incident Root Cause &amp; SOP</h4>
 <ul>
@@ -394,10 +413,8 @@ Akamai CDN, and self-hosted LLM observability for the AI-agent platform.</p>
 </ul>
 <h4>🤖 AI for SRE</h4>
 <ul>
-<li>Built Claude Code skills for fleet health sweeps, IAM ticket intake,<br />
-  PR review against live GCP state, and Datadog queries.</li>
-<li>Ran a read-only benchmark of Opus vs Gemini on <strong>25 real SRE tasks</strong>;<br />
-  set up Gemini Enterprise data stores on BigQuery.</li>
+<li>Built Claude Code skills for IAM ticket intake, PR review against live<br />
+  GCP state, and Datadog queries.</li>
 </ul>
 <hr />
 <h3>DevOps Engineer · ViewSonic Corporation</h3>
