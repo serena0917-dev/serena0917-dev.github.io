@@ -366,9 +366,9 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 </ul>
 <h4>🚦 LLM Gateway — Access &amp; Cost Control with LiteLLM</h4>
 <ul>
-<li>Moved agent-service Gemini traffic behind the <strong>LiteLLM gateway</strong> for<br />
-  per-key auth, budget control and usage logging; delivered gateway keys<br />
-  to UAT / STAG / PROD as KMS-encrypted flags and verified every rollout.</li>
+<li>Wired agent services to the <strong>LiteLLM gateway</strong> so Gemini traffic moves<br />
+  behind per-key auth, budget control and usage logging; delivered gateway<br />
+  keys to UAT / STAG / PROD as KMS-encrypted flags and verified every rollout.</li>
 <li>Mapped the gateway model end to end: per-engineer virtual keys (vendor<br />
   credentials live only on the proxy), model routing, per-key spend<br />
   budgets, and why a key can or cannot see a model.</li>
