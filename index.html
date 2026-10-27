@@ -427,12 +427,6 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <li>Diagnosed BigQuery syncs silently dropping rows at the 10M document quota;<br />
   raised it to 20M and moved large tables to rolling 30-day copies.</li>
 </ul>
-<h4>☸️ GKE Operations</h4>
-<ul>
-<li>Decommissioned a legacy data GKE cluster: wrote the rollback plan first,<br />
-  scaled down and soaked for <strong>13 days</strong>, then deleted the cluster.</li>
-<li>Staged new service rollouts and HPA tuning on shared GKE clusters.</li>
-</ul>
 <h4>🔥 Incident Root Cause &amp; SOP</h4>
 <ul>
 <li>Traced a <strong>5.8h Kafka consumer lag</strong> on the analytics pipeline to a single<br />
