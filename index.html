@@ -464,27 +464,37 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <li><strong>Learning loop</strong> — corrections and root causes go into persistent<br />
   memory (~100 entries), so the same mistake is fixed once, not every session.</li>
 </ul>
-<h4>🔥 Incident Root Cause &amp; SOP</h4>
+<h4>🔥 Incident 1 — Analytics Pipeline Lag <em>(Kafka → Matomo → BigQuery)</em></h4>
 <ul>
-<li><strong>Analytics pipeline lag</strong> — one Kafka partition of the web-analytics<br />
-  pipeline backed up to ~900K messages (<strong>5.8h</strong> behind) while the other 35<br />
-  stayed at seconds, and no alert fired.</li>
-<li><strong>Finding the source</strong> — sampled 3,000 messages at the consumer offset:<br />
-  82% came from one device, with identical IP, cookie, URL and page-load<br />
-  timestamp — the same page calling trackPageView ~36×/s, not reloads or a<br />
-  DDoS. Matched it in BigQuery by hashing the user id (1.48M events, 9× the<br />
-  next device). Per-device sequential consumption (~25/s) explained why only<br />
-  that partition lagged.</li>
+<li><strong>How it surfaced</strong> — no alert fired (the lag monitor's threshold sat at<br />
+  ~3.8 days), so it was caught by hand: one Kafka partition of the<br />
+  web-analytics pipeline had backed up to ~900K messages — <strong>5.8 hours</strong><br />
+  behind — while the other 35 partitions stayed at seconds. Analytics data<br />
+  for every user on that partition was delayed with it.</li>
+<li><strong>Troubleshooting</strong> — ruled out the consumer first (no restart, no OOM),<br />
+  then sampled 3,000 messages at the consumer offset: 82% came from one<br />
+  device, with identical IP, cookie, URL and page-load timestamp — one open<br />
+  page calling trackPageView ~36×/s, not reloads, many sources or a DDoS.<br />
+  Matomo sends one device's events sequentially (~25/s), slower than the<br />
+  flood, which is why only that partition lagged.</li>
+<li><strong>Problems along the way</strong> — the existing runbook started from a device<br />
+  id that was already known, and its BigQuery lookups returned nothing for<br />
+  web traffic: the device had to be matched by hashing the user id, and the<br />
+  event name sits in a different field for web events. Once matched, the<br />
+  device was the day's top sender (1.48M events, 9× the next) and had done<br />
+  the same two days earlier.</li>
 <li><strong>Root cause</strong> — not one user but a frontend loop: the live room page spun<br />
-  when a blocked viewer's streamer ended the stream; 24 devices accounted<br />
-  for 97.5% of that event. Handed the reproduction to the web team; after<br />
-  the fix, daily volume dropped from 1.83M to 2.6K and lag returned to ~25.</li>
-<li><strong>SOP</strong> — wrote the runbook for tracing consumer lag back to one device,<br />
-  including two lookup traps that had cost time (which id field and which<br />
-  event-name field are populated for web traffic); follow-ups opened for<br />
-  per-device rate limiting and a lag alert that actually fires.</li>
+  when a blocked viewer's streamer ended the stream. 24 devices produced<br />
+  97.5% of that event; the worst one just happened to land on one<br />
+  partition.</li>
+<li><strong>Fix &amp; follow-up</strong> — handed the evidence to the web team, who fixed the<br />
+  loop; verified daily volume fell from 1.83M to 2.6K and the partition lag<br />
+  returned to ~25 messages. Wrote the SOP for tracing lag back to one<br />
+  device (including both lookup traps), flagged the affected window for<br />
+  data analysis, and opened follow-ups for per-device rate limiting and a<br />
+  lag alert that actually fires.</li>
 </ul>
-<h4>🔒 Expired Origin Certificate <em>(Akamai 503)</em></h4>
+<h4>🔥 Incident 2 — Expired Origin Certificate <em>(Akamai 503)</em></h4>
 <ul>
 <li><strong>How it surfaced</strong> — the staging site started returning 503 while production<br />
   still looked healthy. Akamai checks origin certificates strictly, and the<br />
