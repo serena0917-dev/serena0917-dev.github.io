@@ -351,29 +351,39 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <h2>Experience</h2>
 <h3>Senior SRE · 17LIVE Inc.</h3>
 <p><em>Taipei · Jul 2026 – Present · SRE Team · (live-streaming platform)</em></p>
-<h4>🧠 LLM Platform — Prompt Management with Langfuse</h4>
+<h4>🧠 Prompt Management &amp; Evaluation <em>(Langfuse)</em></h4>
 <ul>
-<li>Self-hosted <strong>Langfuse v4</strong> as the prompt registry for agent services: PMs<br />
-  publish a new prompt version in the UI and the service fetches the<br />
-  labelled version at runtime — prompt wording changes no longer need a<br />
-  code change and deploy.</li>
-<li><strong>Datasets</strong> let a prompt change be checked before it reaches staging;<br />
-  enabled <strong>batch export to GCS</strong> so datasets and evaluation results feed<br />
-  content-evaluation automation (30-day retention).</li>
-<li>Rolled out UAT → STAG → PROD via ArgoCD + Helm, each verified before the<br />
-  next. PROD runs HA: multi-zone web / worker replicas with PDB, Cloud SQL<br />
-  regional HA + PITR, replicated Redis Cloud, Google SSO.</li>
+<li>Self-hosted <strong>Langfuse v4</strong> for UAT → STAG → PROD (one project per<br />
+  environment, Google SSO), backing content evaluation for AI-generated<br />
+  live-stream interaction suggestions.</li>
+<li><strong>Prompt lifecycle</strong> — prompts named by use case / locale; every edit is<br />
+  saved as a candidate version, and the <code>production</code> label (the version the<br />
+  service fetches at runtime) only moves after evaluation passes — prompt<br />
+  changes ship without a code deploy.</li>
+<li><strong>Datasets &amp; Experiments</strong> — test cases (input variables, expected output,<br />
+  metadata) run as batch experiments scored by LLM judges: safety hard gates<br />
+  (dirty words, policy, IP compliance) and quality gates (fluency, clarity,<br />
+  tone) with release thresholds, plus cost / latency per run. Enabled<br />
+  batch export of results to GCS.</li>
+<li>PROD runs HA: multi-zone web / worker replicas with PDB, Cloud SQL<br />
+  regional HA + PITR, replicated Redis Cloud.</li>
 </ul>
-<h4>🚦 LLM Gateway — Access &amp; Cost Control with LiteLLM</h4>
+<h4>🚦 AI Access &amp; Cost Governance <em>(LiteLLM gateway)</em></h4>
 <ul>
-<li>Wired agent services to the <strong>LiteLLM gateway</strong> so Gemini traffic moves<br />
-  behind per-key auth, budget control and usage logging; delivered gateway<br />
-  keys to UAT / STAG / PROD as KMS-encrypted flags and verified every rollout.</li>
-<li>Mapped the gateway model end to end: per-engineer virtual keys (vendor<br />
-  credentials live only on the proxy), model routing, per-key spend<br />
-  budgets, and why a key can or cannot see a model.</li>
-<li>Validated Claude Code running through the gateway with one unchanged<br />
-  config, switching backend by environment variables only.</li>
+<li>One gateway per environment (UAT / pre-prod / prod) in front of Vertex AI<br />
+  Gemini: every person and service calls models with its own <strong>virtual key</strong>;<br />
+  provider credentials never leave the gateway.</li>
+<li><strong>Model access groups</strong> decide who can use what — general Gemini text<br />
+  models by default; image / Veo video generation and purpose-built groups<br />
+  granted per user or per service team.</li>
+<li><strong>Budgets</strong> — monthly per-person budgets, and <strong>service teams</strong> with their own<br />
+  budget and service-account keys limited to model calls; per-model token<br />
+  pricing drives spend tracking, usage dashboards and request logs.</li>
+<li><strong>Role-based access</strong> (user / view-only admin / admin) requested through Slack<br />
+  self-service with supervisor → SRE Director approval; accounts removed<br />
+  automatically on offboarding.</li>
+<li>Provisioned service keys for agent services in UAT / STAG / PROD as<br />
+  KMS-encrypted flags and verified every rollout.</li>
 </ul>
 <h4>📏 Model Evaluation</h4>
 <ul>
@@ -667,7 +677,7 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>GCP</strong></td>
-<td>GKE · Cloud SQL · Cloud Run · Cloud Functions · IoT Core · BigQuery · Cloud Armor · Security Command Center · Cloud Monitoring · PubSub · Secret Manager · Certificate Manager · Gemini Enterprise · PSC · DMS</td>
+<td>GKE · Cloud SQL · Cloud Run · Cloud Functions · IoT Core · BigQuery · Cloud Armor · Security Command Center · Cloud Monitoring · PubSub · Secret Manager · Certificate Manager · Vertex AI · Gemini Enterprise · PSC · DMS</td>
 </tr>
 <tr>
 <td><strong>CDN / Edge</strong></td>
