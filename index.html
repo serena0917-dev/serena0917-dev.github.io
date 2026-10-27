@@ -441,6 +441,29 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   ticket, and moved large tables to rolling 30-day copies (5.26M → ~1.45M<br />
   rows) so growth stays bounded.</li>
 </ul>
+<h4>🛠️ AI for SRE <em>(how I work day to day with Claude Code)</em></h4>
+<ul>
+<li><strong>Skills as team knowledge</strong> — 15+ skills that encode how 17LIVE actually<br />
+  runs: Terraform / IAM ticket intake, PR review against live GCP state,<br />
+  multi-cluster GKE health sweeps, Akamai property reads, Datadog queries,<br />
+  Jenkins deploys, Jira / Confluence in the team's ticket format, and the<br />
+  weekly vendor review.</li>
+<li><strong>Guardrails as hooks</strong> — 30+ hooks enforce the rules I would otherwise<br />
+  repeat: no prod change without an approved change ticket, destructive<br />
+  commands blocked, credentials only through 1Password, every conclusion<br />
+  shown with the exact command and its raw output.</li>
+<li><strong>Human in the loop</strong> — read-only checks run on their own; anything that<br />
+  changes state is handed to me as a pasteable command block, with the<br />
+  agent watching my terminal and polling what follows (PR checks, Argo CD<br />
+  sync, pods, certificates) and reporting back.</li>
+<li><strong>Browser work</strong> — after I log in, the agent reads consoles (GCP, Akamai,<br />
+  Datadog, LiteLLM) and fills forms up to the final click, which stays mine.</li>
+<li><strong>Parallel work</strong> — a change spanning platforms is phased by<br />
+  environment (staging verified before prod), with one background agent per<br />
+  platform; daily-sync notes drafted into Slack from the day's tickets.</li>
+<li><strong>Learning loop</strong> — corrections and root causes go into persistent<br />
+  memory (~100 entries), so the same mistake is fixed once, not every session.</li>
+</ul>
 <h4>🔥 Incident Root Cause &amp; SOP</h4>
 <ul>
 <li>Traced a <strong>5.8h Kafka consumer lag</strong> on the analytics pipeline to a single<br />
@@ -465,29 +488,6 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <li>Pub/Sub topics &amp; subscriptions for service migrations · Cloud Run direct<br />
   VPC egress to MongoDB Atlas · Datadog Agent on a new prod project ·<br />
   Secret Manager credentials · HPA tuning.</li>
-</ul>
-<h4>🛠️ AI for SRE <em>(how I work day to day with Claude Code)</em></h4>
-<ul>
-<li><strong>Skills as team knowledge</strong> — 15+ skills that encode how 17LIVE actually<br />
-  runs: Terraform / IAM ticket intake, PR review against live GCP state,<br />
-  multi-cluster GKE health sweeps, Akamai property reads, Datadog queries,<br />
-  Jenkins deploys, Jira / Confluence in the team's ticket format, and the<br />
-  weekly vendor review.</li>
-<li><strong>Guardrails as hooks</strong> — 30+ hooks enforce the rules I would otherwise<br />
-  repeat: no prod change without an approved change ticket, destructive<br />
-  commands blocked, credentials only through 1Password, every conclusion<br />
-  shown with the exact command and its raw output.</li>
-<li><strong>Human in the loop</strong> — read-only checks run on their own; anything that<br />
-  changes state is handed to me as a pasteable command block, with the<br />
-  agent watching my terminal and polling what follows (PR checks, Argo CD<br />
-  sync, pods, certificates) and reporting back.</li>
-<li><strong>Browser work</strong> — after I log in, the agent reads consoles (GCP, Akamai,<br />
-  Datadog, LiteLLM) and fills forms up to the final click, which stays mine.</li>
-<li><strong>Parallel work</strong> — a change spanning platforms is phased by<br />
-  environment (staging verified before prod), with one background agent per<br />
-  platform; daily-sync notes drafted into Slack from the day's tickets.</li>
-<li><strong>Learning loop</strong> — corrections and root causes go into persistent<br />
-  memory (~100 entries), so the same mistake is fixed once, not every session.</li>
 </ul>
 <hr />
 <h3>DevOps Engineer · ViewSonic Corporation</h3>
