@@ -321,26 +321,26 @@ footer {
 <h2>Profile</h2>
 <p>7-year cross-cloud SRE / DevOps engineer with hands-on production experience<br />
 across <strong>AWS, GCP, and on-premise</strong> environments. Background spans crypto<br />
-exchange (high regulatory bar), martech SaaS, hardware / IoT, and education<br />
-tech — covering <strong>SOC 2 / ISO 27001 compliance</strong>, <strong>org-scale cloud migration</strong>,<br />
+exchange (high regulatory bar), live streaming, martech SaaS, hardware / IoT,<br />
+and education tech — covering <strong>SOC 2 / ISO 27001 compliance</strong>, <strong>org-scale cloud migration</strong>,<br />
 <strong>security incident response</strong>, <strong>cost optimization</strong>, and <strong>AI-powered SRE<br />
-tooling</strong>. Currently driving SOC 2 readiness, pre-production environment<br />
-design, and an LLM-based SRE agent at ViewSonic.</p>
+tooling</strong>. Currently Senior SRE at 17LIVE, running a 100+ cluster GKE estate,<br />
+Akamai CDN, and self-hosted LLM observability for the AI-agent platform.</p>
 <hr />
 <h2>Highlights</h2>
 <ul>
-<li><strong>Multi-cloud</strong> — AWS (~5 yrs) + GCP (2 yrs); 11+ AWS accounts, multi-region production</li>
+<li><strong>Multi-cloud</strong> — AWS (~5 yrs) + GCP (2.5 yrs); 11+ AWS accounts, 100+ GKE clusters, multi-region production</li>
 <li><strong>Compliance</strong> — SOC 2 audit readiness · ISO 27001 monitoring</li>
 <li><strong>Migration scale</strong> — GCP Org migration (Shared VPC, PSC, DMS) · GitHub org migration (69 repos)</li>
 <li><strong>Security</strong> — Drove breach response &amp; full EKS rebuild · Secret Manager + ESO + key rotation · WAF / GuardDuty / SCC</li>
 <li><strong>Cost</strong> — AWS Savings Plans + RI (RDS / Redis / OpenSearch + Compute SP) · GCP CUD · 100% Spot GKE · KubeCost</li>
-<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team</li>
+<li><strong>AI / automation</strong> — Built OpenClaw (LLM-based SRE agent) · 30+ Claude Code skills + hook-driven automation adopted by infra team · Self-hosted Langfuse (UAT → PROD) for LLM observability</li>
 </ul>
 <hr />
 <h2>AI Workflow &amp; Tooling</h2>
 <p>Daily-driver LLM integration into DevOps work — built around custom skills, hooks, and reusable knowledge:</p>
 <ul>
-<li><strong>Stack</strong> — Claude Code (Opus 4.7, 1M context) as primary terminal-native AI for ops, IaC review, and incident triage; Cursor / GitHub Copilot for IDE pair-programming.</li>
+<li><strong>Stack</strong> — Claude Code (Opus, 1M context) as primary terminal-native AI for ops, IaC review, and incident triage; Cursor / GitHub Copilot for IDE pair-programming.</li>
 <li><strong>Skill design</strong> — Author reusable skills following <strong>progressive disclosure</strong> (metadata → SKILL.md → references) so deep procedural knowledge loads on-demand without eating context budget; trigger keywords tuned for high recall, low false-positive.</li>
 <li><strong>Hook-driven automation</strong> — Built event hooks (<code>SessionStart</code> / <code>PostToolUse</code> / <code>Stop</code>) for dirty-repo warnings, auto-commit + auto-PR with merge gating, and auto-Jira-ticket on PR open — removed manual hand-offs from daily ops.</li>
 <li><strong>Multi-agent orchestration</strong> — Use team-mode (multi-role review), parallel-research (multi-angle investigation), and parallel-dev (git-worktree isolated feature work) to scale beyond single-agent context limits.</li>
@@ -349,8 +349,59 @@ design, and an LLM-based SRE agent at ViewSonic.</p>
 </ul>
 <hr />
 <h2>Experience</h2>
+<h3>Senior SRE · 17LIVE Inc.</h3>
+<p><em>Taipei · Jul 2026 – Present · SRE Team · (live-streaming platform)</em></p>
+<h4>🔭 Self-hosted LLM Observability (Langfuse)</h4>
+<ul>
+<li>Deployed self-hosted <strong>Langfuse v4</strong> across UAT → STAG → PROD on the AI-agent<br />
+  GKE clusters via ArgoCD + Helm, each environment shipped and verified<br />
+  before the next.</li>
+<li>Redis Cloud backend, Google SSO, and batch export of traces to GCS;<br />
+  wired Langfuse + LiteLLM into agent services so PM / RD can manage<br />
+  prompt versions and datasets.</li>
+</ul>
+<h4>☸️ GKE Fleet Operations <em>(100+ clusters)</em></h4>
+<ul>
+<li>Decommissioned a legacy data GKE cluster: wrote the rollback plan first,<br />
+  scaled down and soaked for <strong>13 days</strong>, then deleted the cluster.</li>
+<li>Evaluated GKE fleet management for the multi-cluster estate; built a<br />
+  read-only fleet sweep for crashlooping / OOMKilled / pending workloads.</li>
+</ul>
+<h4>🔥 Incident Root Cause &amp; SOP</h4>
+<ul>
+<li>Traced a <strong>5.8h Kafka consumer lag</strong> on the analytics pipeline to a single<br />
+  web client flooding pageviews; drove the frontend fix and verified the<br />
+  lag recovered.</li>
+<li>Wrote the reusable SOP for tracing consumer lag back to one device.</li>
+<li>Replaced an expired origin certificate with <strong>Google-managed certificates</strong><br />
+  for production and staging domains.</li>
+</ul>
+<h4>🌐 CDN &amp; Edge <em>(Akamai)</em></h4>
+<ul>
+<li>Added CDN caching for the SEO metadata API, including a locale-aware<br />
+  cache key.</li>
+<li>Moved a maintenance-status API to a CDN-direct Cloud Function, removing<br />
+  the GKE ingress hop.</li>
+<li>Bot protection for a scraped public API (in progress).</li>
+</ul>
+<h4>🔐 IAM &amp; Provisioning as Code</h4>
+<ul>
+<li>GCP IAM / service-account / access requests delivered as Terraform PRs;<br />
+  CircleCI deploy access for agent pipelines.</li>
+<li>Pub/Sub topics &amp; subscriptions for service migrations · Cloud Run direct<br />
+  VPC egress to MongoDB Atlas · Datadog Agent on a new prod project ·<br />
+  Secret Manager credentials · HPA tuning.</li>
+</ul>
+<h4>🤖 AI for SRE</h4>
+<ul>
+<li>Built Claude Code skills for fleet health sweeps, IAM ticket intake,<br />
+  PR review against live GCP state, and Datadog queries.</li>
+<li>Ran a read-only benchmark of Opus vs Gemini on <strong>25 real SRE tasks</strong>;<br />
+  set up Gemini Enterprise data stores on BigQuery.</li>
+</ul>
+<hr />
 <h3>DevOps Engineer · ViewSonic Corporation</h3>
-<p><em>New Taipei · 2025 – Present · DEV Department</em></p>
+<p><em>New Taipei · 2025 – 2026 · DEV Department</em></p>
 <h4>🛡️ SOC 2 Audit Readiness</h4>
 <ul>
 <li>Drove SOC 2 documentation preparation (PBC mapping) across RD / SRE / QA,<br />
@@ -599,7 +650,11 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>GCP</strong></td>
-<td>GKE · Cloud SQL · Cloud Functions · IoT Core · BigQuery · Cloud Armor · Security Command Center · Cloud Monitoring · PubSub · PSC · DMS</td>
+<td>GKE · Cloud SQL · Cloud Run · Cloud Functions · IoT Core · BigQuery · Cloud Armor · Security Command Center · Cloud Monitoring · PubSub · Secret Manager · Certificate Manager · Gemini Enterprise · PSC · DMS</td>
+</tr>
+<tr>
+<td><strong>CDN / Edge</strong></td>
+<td>Akamai (Property Manager, cache keys, Fast Purge, bot protection) · CloudFront + Lambda@Edge</td>
 </tr>
 <tr>
 <td><strong>IaC</strong></td>
@@ -611,11 +666,11 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>CI/CD</strong></td>
-<td>GitLab + GitLab Runner · Jenkins (JNLP + Kaniko + S3 / EFS cache) · GitHub Actions (reusable workflows, OIDC)</td>
+<td>GitLab + GitLab Runner · Jenkins (JNLP + Kaniko + S3 / EFS cache) · GitHub Actions (reusable workflows, OIDC) · CircleCI</td>
 </tr>
 <tr>
 <td><strong>Observability</strong></td>
-<td>Grafana · OpenTelemetry · Thanos · ELK / OpenSearch · PMM · CloudWatch · Cloud Monitoring · Sentry</td>
+<td>Datadog · Grafana · OpenTelemetry · Thanos · ELK / OpenSearch · PMM · CloudWatch · Cloud Monitoring · Sentry · Langfuse</td>
 </tr>
 <tr>
 <td><strong>Security &amp; Compliance</strong></td>
@@ -623,7 +678,7 @@ firmware management products.</p>
 </tr>
 <tr>
 <td><strong>AI / DevTools</strong></td>
-<td>Claude Code (Opus, 1M ctx) · Custom skill development (progressive disclosure, trigger design) · Hook-driven automation (SessionStart / PostToolUse / Stop) · Multi-agent orchestration (team-mode / parallel-research / parallel-dev) · Prompt engineering for ops · LLM-based incident response (OpenClaw) · Cursor · GitHub Copilot</td>
+<td>Claude Code (Opus, 1M ctx) · LiteLLM · Langfuse · Custom skill development (progressive disclosure, trigger design) · Hook-driven automation (SessionStart / PostToolUse / Stop) · Multi-agent orchestration (team-mode / parallel-research / parallel-dev) · Prompt engineering for ops · LLM-based incident response (OpenClaw) · Cursor · GitHub Copilot</td>
 </tr>
 <tr>
 <td><strong>Languages</strong></td>
@@ -636,7 +691,7 @@ firmware management products.</p>
 </tbody>
 </table>
 <footer>
-  Last updated: 2026-07-14
+  Last updated: 2026-10-27
 </footer>
 </main>
 </body>
