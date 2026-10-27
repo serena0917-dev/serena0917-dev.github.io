@@ -549,13 +549,39 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   worst scraper IPs, and ran a dry run on staging and production with<br />
   nothing of ours blocked before enforcing.</li>
 </ul>
-<h4>🔐 IAM &amp; Provisioning as Code</h4>
+<h4>🏗️ Infrastructure as Code <em>(Terraform · ArgoCD · Atlantis · BOBO)</em></h4>
 <ul>
-<li>GCP IAM / service-account / access requests delivered as Terraform PRs;<br />
-  CircleCI deploy access for agent pipelines.</li>
-<li>Pub/Sub topics &amp; subscriptions for service migrations · Cloud Run direct<br />
-  VPC egress to MongoDB Atlas · Datadog Agent on a new prod project ·<br />
-  Secret Manager credentials · HPA tuning.</li>
+<li><strong>Scope</strong> — everything ships as a PR: Terraform for GCP (plus Route53 and<br />
+  Redis Cloud), ArgoCD / Helm values for workloads, and KMS-encrypted flags<br />
+  for app config — staging built and verified before production.</li>
+<li><strong>Examples</strong>:
+  <ul>
+  <li>Langfuse platform per environment — Cloud SQL PostgreSQL 17 (regional HA,<br />
+    PITR) over Private Service Access with private DNS, GCS bucket with<br />
+    lifecycle and HMAC key, Redis Cloud database, Secret Manager entries,<br />
+    static IP and managed cert, then the ArgoCD apps.</li>
+  <li>Certificate Manager wildcard certificates, DNS authorizations and<br />
+    certificate maps for three projects.</li>
+  <li>Cloud Run <strong>direct VPC egress</strong> to MongoDB Atlas over existing peering — no<br />
+    NAT, no <code>0.0.0.0/0</code> on the Atlas allow-list.</li>
+  <li>Pub/Sub topics and subscriptions for service migrations; resources for<br />
+    a Gemini-based alert-triage service on Cloud Run; payment-gateway<br />
+    database credentials; a new service's staging deployment with DNS, GCS,<br />
+    Datadog metrics and Fluentd logging; Datadog Agent via Helm; HPA tuning.</li>
+  </ul></li>
+<li><strong>BOBO as co-author</strong> — I brief BOBO in Slack and it opens the Terraform /<br />
+  ArgoCD PR (for example the Langfuse STAG / PROD build-out and the<br />
+  certificate rollout); I review the plan, and merge / apply stays with<br />
+  humans.</li>
+<li><strong>Atlantis for Terraform CD</strong> — the team runs two Atlantis instances on GKE<br />
+  (non-prod on the staging infra cluster, prod on the prod infra cluster),<br />
+  each with its own GCP service account and GitHub App, behind a webhook<br />
+  endpoint. A reviewer comments <code>atlantis-nonprod plan</code> / <code>apply</code> on the PR;<br />
+  plan and apply require a code-owner approval, only the SRE team's<br />
+  comments count, each root is locked between plan and apply, a stale<br />
+  base is rejected, and a successful apply auto-merges. Roots run in order<br />
+  (service accounts and custom roles before bindings); 56 roots across 7<br />
+  projects are covered so far.</li>
 </ul>
 <hr />
 <h3>DevOps Engineer · ViewSonic Corporation</h3>
