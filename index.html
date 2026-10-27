@@ -385,6 +385,21 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <li>Provisioned service keys for agent services in UAT / STAG / PROD as<br />
   KMS-encrypted flags and verified every rollout.</li>
 </ul>
+<h4>💬 BOBO — SRE Slack AI Agent</h4>
+<ul>
+<li><strong>How it is taught</strong> — no fine-tuning: a persona and operating rules file with a<br />
+  skill routing table, plus <strong>20+ runbook skills</strong> (access requests, GCP IAM<br />
+  ticket pipeline, Terraform PRs, GKE / Cloud SQL creation, Helm deploys,<br />
+  alert triage, observability map, LiteLLM ops, architecture). Every change<br />
+  goes through PR + CI, with a promptfoo benchmark scoring answers.</li>
+<li><strong>What it does</strong> — answers architecture / config / permission questions;<br />
+  reads GitHub, Jira, Confluence, Datadog, Slack and GCP IAM; opens issues<br />
+  and IaC PRs and runs <code>terraform plan</code>; GCP IAM tickets are dispatched to it<br />
+  automatically.</li>
+<li><strong>Guardrails</strong> — read-only GCP, per-session Docker sandbox with 1-hour<br />
+  tokens, hard blocklist for destructive commands, manual approval with<br />
+  timeout, user / channel allowlists; merge and apply stay with humans.</li>
+</ul>
 <h4>📏 Model Evaluation</h4>
 <ul>
 <li>Ran a read-only benchmark of Opus vs Gemini on <strong>25 real SRE tasks</strong>.</li>
@@ -420,21 +435,6 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <li>Pub/Sub topics &amp; subscriptions for service migrations · Cloud Run direct<br />
   VPC egress to MongoDB Atlas · Datadog Agent on a new prod project ·<br />
   Secret Manager credentials · HPA tuning.</li>
-</ul>
-<h4>💬 BOBO — SRE Slack AI Agent</h4>
-<ul>
-<li><strong>How it is taught</strong> — no fine-tuning: a persona and operating rules file with a<br />
-  skill routing table, plus <strong>20+ runbook skills</strong> (access requests, GCP IAM<br />
-  ticket pipeline, Terraform PRs, GKE / Cloud SQL creation, Helm deploys,<br />
-  alert triage, observability map, LiteLLM ops, architecture). Every change<br />
-  goes through PR + CI, with a promptfoo benchmark scoring answers.</li>
-<li><strong>What it does</strong> — answers architecture / config / permission questions;<br />
-  reads GitHub, Jira, Confluence, Datadog, Slack and GCP IAM; opens issues<br />
-  and IaC PRs and runs <code>terraform plan</code>; GCP IAM tickets are dispatched to it<br />
-  automatically.</li>
-<li><strong>Guardrails</strong> — read-only GCP, per-session Docker sandbox with 1-hour<br />
-  tokens, hard blocklist for destructive commands, manual approval with<br />
-  timeout, user / channel allowlists; merge and apply stay with humans.</li>
 </ul>
 <h4>🛠️ AI for SRE</h4>
 <ul>
