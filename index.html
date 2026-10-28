@@ -537,11 +537,6 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   Function itself, cut over dev through a Cloudflare Worker, then pointed<br />
   the Akamai origin straight at the function — client → Akamai → function,<br />
   with GKE out of the path.</li>
-<li><strong>Silent failure found during the move</strong> — another team's cleanup removed<br />
-  the old ingress route before the CDN cutover, so the endpoint returned 404<br />
-  for a day. The frontend fails open, so nothing broke visibly, but<br />
-  maintenance mode was inert; the cutover itself restored it. Lesson<br />
-  recorded: cleanup only after the cutover is verified.</li>
 <li><strong>Bot protection for a scraped API</strong> — an anonymous endpoint returning the full<br />
   live-stream list was being scraped. Turned on Akamai bot detection in<br />
   monitor mode, agreed the design with Akamai (allowlist our app, frontend<br />
