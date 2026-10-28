@@ -523,14 +523,12 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
 <ul>
 <li><strong>SEO metadata API caching</strong> — every request was hitting the Node.js<br />
   origin. Added an Akamai cache rule with the web team (agreed a 1-day TTL<br />
-  instead of 7) plus a Fast Purge API client so they can invalidate on<br />
-  release; shipped to staging, verified caching and purge, then production.<br />
-  Kept 404s at Akamai's 10-second default, because the setting that extends<br />
-  it would also cache 5xx errors.</li>
-<li><strong>Locale-aware cache key</strong> — without <code>locale</code> in the key, every language<br />
-  got whichever response was cached first, for up to a day. Added it to the<br />
-  cache key on staging, verified per-locale entries, then production under a<br />
-  change ticket.</li>
+  instead of 7), a Fast Purge API client so they can invalidate on release,<br />
+  and <code>locale</code> in the cache key so each language gets its own entry instead of<br />
+  whichever was cached first. Shipped to staging, verified caching, purge and<br />
+  per-locale entries, then production under a change ticket. Kept 404s at<br />
+  Akamai's 10-second default, because the setting that extends it would also<br />
+  cache 5xx errors.</li>
 <li><strong>Maintenance-status API, 6 hops → 2</strong> — the shop waits on this API before<br />
   first paint, and the old path ran through GKE ingress to an nginx pod that<br />
   also owned the CORS headers. Moved CORS and <code>Cache-Control</code> into the Cloud<br />
