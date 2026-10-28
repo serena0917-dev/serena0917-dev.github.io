@@ -566,7 +566,7 @@ agents (Langfuse prompt management, LiteLLM gateway), GKE, and Akamai CDN.</p>
   ArgoCD PR (for example the Langfuse STAG / PROD build-out and the<br />
   certificate rollout); I review the plan, and merge / apply stays with<br />
   humans.</li>
-<li><strong>Atlantis for Terraform CD</strong> — the team runs two Atlantis instances on GKE<br />
+<li><strong>Atlantis for Terraform CD</strong> — two Atlantis instances run on GKE<br />
   (non-prod on the staging infra cluster, prod on the prod infra cluster),<br />
   each with its own GCP service account and GitHub App, behind a webhook<br />
   endpoint. A reviewer comments <code>atlantis-nonprod plan</code> / <code>apply</code> on the PR;<br />
